@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#303030</color>
+    <color name="colorPrimaryDark">#202020</color>
+    <color name="colorAccent">#707070</color>
+    <color name="colorBackground">#FFFFFF</color>
+
+    <color name="beep">#fff666</color>
+
+    <color name="textColor">#707070</color>
+    <color name="textColorLight">#FFFFFF</color>
+    <color name="textColorDark">#303030</color>
+
+    <color name="glassLight">#000000</color>
+    <color name="glassDark">#707070</color>
+
+    <color name="backgroundLight">#FFFFFF</color>
+    <color name="backgroundDark">#000000</color>
+</resources>

@@ -1,0 +1,21 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/textColor</item>
+        <item name="android:textColorPrimaryInverse">@color/textColorDark</item>
+        <item name="android:drawableTint">@color/glassLight</item>
+        <item name="android:popupBackground">@color/beep</item>
+    </style>
+
+    <style name="LightTheme" parent="AppTheme">
+
+    </style>
+
+    <style name="DarkTheme" parent="AppTheme">
+        <item name="android:drawableTint">@color/glassDark</item>
+    </style>
+
+</resources>

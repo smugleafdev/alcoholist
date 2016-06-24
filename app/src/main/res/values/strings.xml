@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">AlcohoList</string>
+    <string name="error_upload_failed"></string>
+    <string name="error_no_url"></string>
+    <string name="error_invalid_url"></string>
+    <string name="error_invalid_color"></string>
+</resources>
