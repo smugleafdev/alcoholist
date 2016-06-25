@@ -34,7 +34,7 @@
         app:srcCompat="@drawable/ic_add"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-    <!--android:background="@drawable/ic_add"-->
-    <!--android:backgroundTint="@color/colorPrimary"-->
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/ic_add"
+        android:backgroundTint="@color/colorPrimary"/>
 </RelativeLayout>

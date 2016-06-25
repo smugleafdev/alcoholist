@@ -1,9 +1,12 @@
 package smugleaf.drinksmenu;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -232,16 +235,30 @@ public class MenuActivity extends AppCompatActivity {
         return "https://spreadsheets.google.com/tq?key=" + link;
     }
 
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnected();
+    }
+
     protected void loadMenu(String link) {
         // TODO: Loading icon START
-        new DownloadSheet(new AsyncResult() {
-            @Override
-            public void onResult(JSONObject object) {
-                processJson(object);
+
+        if (isOnline()) {
+            new DownloadSheet(new AsyncResult() {
+                @Override
+                public void onResult(JSONObject object) {
+                    processJson(object);
 //                System.out.print(object);
-            }
-        }).execute(link);//https://docs.google.com/spreadsheets/d/1D-QT0LivQJcsqnK4NJe9FwMRvbYmXXCOMJb4myYObtE/edit?usp=sharing
+                }
+            }).execute(link);//https://docs.google.com/spreadsheets/d/1D-QT0LivQJcsqnK4NJe9FwMRvbYmXXCOMJb4myYObtE/edit?usp=sharing
 //        }).execute("https://spreadsheets.google.com/tq?key=1D-QT0LivQJcsqnK4NJe9FwMRvbYmXXCOMJb4myYObtE");
+        } else {
+            Toast.makeText(this, "No internet connection",
+                    Toast.LENGTH_LONG).show();
+            // TODO: Loading icon STOP
+        }
     }
 
     private void processJson(JSONObject object) {

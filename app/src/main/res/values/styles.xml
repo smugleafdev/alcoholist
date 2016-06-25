@@ -7,7 +7,7 @@
         <item name="android:textColorPrimary">@color/textColor</item>
         <item name="android:textColorPrimaryInverse">@color/textColorDark</item>
         <item name="android:drawableTint">@color/glassLight</item>
-        <item name="android:popupBackground">@color/beep</item>
+        <!--<item name="android:popupBackground">@color/beep</item>-->
     </style>
 
     <style name="LightTheme" parent="AppTheme">
