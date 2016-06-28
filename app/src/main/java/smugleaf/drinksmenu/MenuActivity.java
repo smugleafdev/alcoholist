@@ -3,6 +3,7 @@ package smugleaf.drinksmenu;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
@@ -21,7 +22,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -35,17 +35,15 @@ import java.util.ArrayList;
 // TODO: Create commercial version, work with PINNING, use pin to keep app from changing, fullscreen
 // Create options menu to switch between commercial and personal
 // NFC
-// More silhouettes
-// Big + button when empty? --got it, but, not right icon?
-// Divider color? -- meh
-// Theeeeeeeeeeeeeemes -- popup menu thingy
+// Theeeeeeeeeeeeeemes -- popup menu thing, maybe top bar
 // Toolbar color? Dunno wtf to do with this
-// Theme popupBackground to not be white on dark-theme
+// Theme popupBackground to not be white on dark-theme, but remain on classic/default
 // Maybe change app topbar for non-dark theme? Default seems like it should be a different color or something....
-// Save for offline
 // Delete filler data of drink_item
 // Fancy spinner refresh animation
 // Fancy ( + ) button with shadow
+// Set up vector drawables to work compatibly with APIs 15-20
+// Change background color to be slightly brighter than app icon--alt: add shadowy outline to app border
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -61,14 +59,9 @@ public class MenuActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-//        SharedPreferences.Editor editor = this.getSharedPreferences(PREFERENCES_FILE, this.MODE_PRIVATE).edit();
-//        editor.putString(THEME, DEFAULT_THEME);
-//        editor.commit();
-
         SharedPreferences prefs = getSharedPreferences(PREFERENCES_FILE, MODE_PRIVATE);
         String sheetUrl = prefs.getString(SHEET_URL, "");
-        System.out.print(String.format("Sheet: ", sheetUrl));
+//        System.out.print(String.format("Sheet: ", sheetUrl));
         String theme = prefs.getString(THEME, DEFAULT_THEME);
 
         if (theme.equals(LIGHT_THEME)) {
@@ -79,8 +72,9 @@ public class MenuActivity extends AppCompatActivity {
             setTheme(R.style.AppTheme);
         }
 
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        // TODO: Refreshing the theme doesn't fix the title bar
+        // TODO: Refreshing the theme doesn't fix the title bar or actionbar menu
 
         Button importButton = (Button) findViewById(R.id.import_button);
 
@@ -163,8 +157,6 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void setTheme() {
-        // TODO: Make this ask for a theme, set it, refresh, and then save
-
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.themes);
 
@@ -185,17 +177,17 @@ public class MenuActivity extends AppCompatActivity {
                         if (btn.getText().toString().equals("Default Theme")) {
                             editor.putString(THEME, DEFAULT_THEME);
                             editor.commit();
-                            refresh();
+                            setUserTheme();
                             dialog.dismiss();
                         } else if (btn.getText().toString().equals("Classic Theme")) {
                             editor.putString(THEME, LIGHT_THEME);
                             editor.commit();
-                            refresh();
+                            setUserTheme();
                             dialog.dismiss();
                         } else if (btn.getText().toString().equals("Dark Theme")) {
                             editor.putString(THEME, DARK_THEME);
                             editor.commit();
-                            refresh();
+                            setUserTheme();
                             dialog.dismiss();
                         }
                     }
@@ -205,6 +197,26 @@ public class MenuActivity extends AppCompatActivity {
 
         dialog.show();
 
+    }
+
+    private void setUserTheme() {
+        SharedPreferences prefs = getSharedPreferences(PREFERENCES_FILE, MODE_PRIVATE);
+        String theme = prefs.getString(THEME, DEFAULT_THEME);
+
+        if (theme.equals(LIGHT_THEME)) {
+            setTheme(R.style.LightTheme);
+        } else if (theme.equals(DARK_THEME)) {
+            setTheme(R.style.DarkTheme);
+        } else {
+            setTheme(R.style.AppTheme);
+        }
+
+        Bundle temp_bundle = new Bundle();
+        onSaveInstanceState(temp_bundle);
+        Intent intent = new Intent(this, MenuActivity.this.getClass());
+        intent.putExtra("bundle", temp_bundle);
+        startActivity(intent);
+        finish();
     }
 
     private void refresh() {
@@ -226,12 +238,17 @@ public class MenuActivity extends AppCompatActivity {
 //          URL url = new URL(link);
             URL url = new URL("https://docs.google.com/spreadsheets/d/12pe7__L5dADvUi3qcSsvPVlt5QYwEHU5pMCahmgd6I0/edit?usp=sharing");
 
-            link = url.getPath();
-            link = link.replace("/spreadsheets/d/", "");
-            link = link.replace("/edit", ""); // TODO: This can... probably be handled better
-            // TODO: Include validation and error messages for user so they know why they suck
+            if (url.getAuthority().contains("docs.google.com")) {
+                link = url.getPath();
+                link = link.replace("/spreadsheets/d/", "");
+                link = link.replace("/edit", ""); // TODO: This can... probably be handled better
+                // TODO: Include validation and error messages for user so they know why they suck
+            } else {
+                Toast.makeText(this, "Invalid URL", Toast.LENGTH_LONG).show();
+            }
         } catch (IOException e) {
             e.printStackTrace();
+            Toast.makeText(this, "Invalid URL", Toast.LENGTH_LONG).show();
         }
         return "https://spreadsheets.google.com/tq?key=" + link;
     }
@@ -256,14 +273,12 @@ public class MenuActivity extends AppCompatActivity {
             }).execute(link);//https://docs.google.com/spreadsheets/d/1D-QT0LivQJcsqnK4NJe9FwMRvbYmXXCOMJb4myYObtE/edit?usp=sharing
 //        }).execute("https://spreadsheets.google.com/tq?key=1D-QT0LivQJcsqnK4NJe9FwMRvbYmXXCOMJb4myYObtE");
         } else {
-            Toast.makeText(this, "No internet connection",
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "No internet connection", Toast.LENGTH_LONG).show();
             // TODO: Loading icon STOP
         }
     }
 
     private void processJson(JSONObject object) {
-
         try {
             JSONArray rows = object.getJSONArray("rows");
             ArrayList<DrinkItem> drinks = new ArrayList<>();
@@ -305,8 +320,6 @@ public class MenuActivity extends AppCompatActivity {
                 }
             });
 
-            setBackgroundColor();
-
             if (drinks.size() > 0) {
                 saveSheet(object);
             }
@@ -316,17 +329,6 @@ public class MenuActivity extends AppCompatActivity {
         }
 
         // TODO: Loading icon STOP
-    }
-
-    private void setBackgroundColor(){
-        RelativeLayout layout = (RelativeLayout) findViewById(R.id.relative_layout);
-        SharedPreferences prefs = getSharedPreferences(PREFERENCES_FILE, MODE_PRIVATE);
-        String theme = prefs.getString(THEME, DEFAULT_THEME);
-        if (theme.equals(DARK_THEME)) {
-            layout.setBackgroundColor(Color.BLACK);
-        } else {
-            layout.setBackgroundColor(Color.WHITE);
-        }
     }
 
     private void saveSheet(JSONObject object) {
