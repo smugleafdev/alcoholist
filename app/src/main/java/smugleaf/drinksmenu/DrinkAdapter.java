@@ -125,19 +125,10 @@ public class DrinkAdapter extends BaseAdapter implements ListAdapter {
         return rowView;
     }
 
-    // TODO: Make validation for background color that confirms HEX and also 6 chars plus #
-//    private boolean stringIsNullOrEmpty(String string) {
-//
-//    }
-
     private boolean colorIsValid(String hexColor) {
         if (hexColor.matches("-?[0-9a-fA-F]{6}")) {
             return true;
         }
         return false;
-
-
-
-        //http://stackoverflow.com/questions/23155767/how-to-check-string-is-valid-hex-color-code-in-android
     }
 }

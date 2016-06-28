@@ -36,12 +36,12 @@ public class DownloadSheet extends AsyncTask<String, Void, String> {
         // remove the unnecessary parts from the response and construct a JSON
         int start = result.indexOf("{", result.indexOf("{") + 1);
         int end = result.lastIndexOf("}");
-        String jsonResponse = result.substring(start, end);
         try {
+            String jsonResponse = result.substring(start, end);
             JSONObject table = new JSONObject(jsonResponse);
             callback.onResult(table);
         } catch (JSONException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // TODO: Report error with URL
         }
     }
 
