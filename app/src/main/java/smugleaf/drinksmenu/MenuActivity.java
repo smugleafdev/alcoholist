@@ -246,9 +246,9 @@ public class MenuActivity extends AppCompatActivity {
                 Toast.makeText(this, "Invalid URL", Toast.LENGTH_LONG).show();
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Invalid URL", Toast.LENGTH_LONG).show();
-        }
+        e.printStackTrace();
+        Toast.makeText(this, "Invalid URL", Toast.LENGTH_LONG).show();
+    }
         return "https://spreadsheets.google.com/tq?key=" + link;
     }
 
@@ -278,7 +278,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void processJson(JSONObject object) {
-        try {
+        try { // TODO: Row and col end up with one extra null item for some reason: look into DownloadSheet
             JSONArray rows = object.getJSONArray("rows");
             ArrayList<DrinkItem> drinks = new ArrayList<>();
             final ArrayList<String> recipes = new ArrayList<>();
@@ -325,6 +325,7 @@ public class MenuActivity extends AppCompatActivity {
 
         } catch (JSONException e) {
             e.printStackTrace();
+            Toast.makeText(this, "Sheet failed to load.", Toast.LENGTH_LONG).show();
         }
 
         // TODO: Loading icon STOP
