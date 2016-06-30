@@ -291,7 +291,8 @@ public class MenuActivity extends AppCompatActivity {
                 JSONArray columns = row.getJSONArray("c");
 
                 if (!getString(columns, 0).equals("glassware")) {
-
+                    // TODO: Something weird is going on where any null variable ends up taking from the earlier non nulls
+                    // Whether it's reusing glassware, text, or a font color, it picks it up to fill in the blank
                     drinks.add(new DrinkItem(getString(columns, 0),
                             getString(columns, 1),
                             getString(columns, 2),
