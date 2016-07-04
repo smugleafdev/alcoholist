@@ -220,7 +220,8 @@ public class MenuActivity extends AppCompatActivity {
         try {
 //            URL url = new URL("https://docs.google.com/spreadsheets/d/1D-QT0LivQJcsqnK4NJe9FwMRvbYmXXCOMJb4myYObtE/edit?usp=sharing");
 //          URL url = new URL("https://docs.google.com/spreadsheets/d/1-EzK8yVDNskKmTKV_ycg2q2Xn2z86gp6QOwevwp1k94/edit?usp=sharing");
-          URL url = new URL(link);
+//          URL url = new URL(link);
+            URL url = new URL("https://docs.google.com/spreadsheets/d/12pe7__L5dADvUi3qcSsvPVlt5QYwEHU5pMCahmgd6I0/edit?usp=sharing");
 
             link = url.getPath();
             link = link.replace("/spreadsheets/d/", "");
