@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,7 +18,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -43,7 +43,8 @@ import java.util.ArrayList;
 // Fancy spinner refresh animation
 // Fancy ( + ) button with shadow
 // Set up vector drawables to work compatibly with APIs 15-20
-// Change background color to be slightly brighter than app icon--alt: add shadowy outline to app border
+// Change background color to be slightly brighter than app icon--alt: add shadowy outline to app border?
+// Add expand/collapse animatinos to floating button
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -61,7 +62,6 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences prefs = getSharedPreferences(PREFERENCES_FILE, MODE_PRIVATE);
         String sheetUrl = prefs.getString(SHEET_URL, "");
-//        System.out.print(String.format("Sheet: ", sheetUrl));
         String theme = prefs.getString(THEME, DEFAULT_THEME);
 
         if (theme.equals(LIGHT_THEME)) {
@@ -76,21 +76,14 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
         // TODO: Refreshing the theme doesn't fix the title bar or actionbar menu
 
-        Button importButton = (Button) findViewById(R.id.import_button);
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Toast.makeText(getApplicationContext(),"FAB button clicked",Toast.LENGTH_LONG).show();
-//            }
-//        });
+        FloatingActionButton importButton = (FloatingActionButton) findViewById(R.id.import_button);
 
         if (sheetUrl.isEmpty()) {
             importButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     createImportAlert();
+//                    Toast.makeText(getApplicationContext(),"FAB button clicked",Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
@@ -184,7 +177,7 @@ public class MenuActivity extends AppCompatActivity {
                             editor.commit();
                             setUserTheme();
                             dialog.dismiss();
-                        } else if (btn.getText().toString().equals("Dark Theme")) {
+                        } else if (btn.getText().toString().equals("Night Theme")) {
                             editor.putString(THEME, DARK_THEME);
                             editor.commit();
                             setUserTheme();
@@ -233,10 +226,10 @@ public class MenuActivity extends AppCompatActivity {
 
     private String parseUrl(String link) {
         try {
-//            URL url = new URL("https://docs.google.com/spreadsheets/d/1D-QT0LivQJcsqnK4NJe9FwMRvbYmXXCOMJb4myYObtE/edit?usp=sharing");
+            URL url = new URL("https://docs.google.com/spreadsheets/d/1D-QT0LivQJcsqnK4NJe9FwMRvbYmXXCOMJb4myYObtE/edit?usp=sharing");
 //          URL url = new URL("https://docs.google.com/spreadsheets/d/1-EzK8yVDNskKmTKV_ycg2q2Xn2z86gp6QOwevwp1k94/edit?usp=sharing");
 //          URL url = new URL(link);
-            URL url = new URL("https://docs.google.com/spreadsheets/d/12pe7__L5dADvUi3qcSsvPVlt5QYwEHU5pMCahmgd6I0/edit?usp=sharing");
+//            URL url = new URL("https://docs.google.com/spreadsheets/d/12pe7__L5dADvUi3qcSsvPVlt5QYwEHU5pMCahmgd6I0/edit?usp=sharing");
 
             if (url.getAuthority().contains("docs.google.com")) {
                 link = url.getPath();
@@ -334,7 +327,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void saveSheet(JSONObject object) {
-        Button importButton = (Button) findViewById(R.id.import_button);
+        FloatingActionButton importButton = (FloatingActionButton) findViewById(R.id.import_button);
         importButton.setVisibility(View.GONE);
         String jsonString = object.toString();
         SharedPreferences.Editor editor = this.getSharedPreferences(PREFERENCES_FILE, this.MODE_PRIVATE).edit();

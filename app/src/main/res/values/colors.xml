@@ -3,10 +3,8 @@
     <color name="colorPrimary">#333333</color>
     <!--used to be 303030-->
     <color name="colorPrimaryDark">#202020</color>
-    <color name="colorAccent">#707070</color>
+    <color name="colorAccent">#333333</color>
     <color name="colorBackground">#FFFFFF</color>
-
-    <color name="beep">#fff666</color>
 
     <color name="textColor">#707070</color>
     <color name="textColorLight">#FFFFFF</color>

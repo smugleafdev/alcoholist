@@ -85,10 +85,10 @@ public class DrinkAdapter extends BaseAdapter implements ListAdapter {
                 Drawable image = ContextCompat.getDrawable(activity, imageId);
                 if (colorIsValid(glassColor) && theme.equals("default")) {
                     image.setColorFilter(Color.parseColor("#" + glassColor), PorterDuff.Mode.SRC_ATOP);
+                } else if (theme.equals("dark")) {
+                    // TODO: Set glass to dark theme if styles.xml can't handle it
+                    image.setColorFilter(activity.getResources().getColor(R.color.glassDark), PorterDuff.Mode.SRC_ATOP);
                 }
-//            } else if (theme.equals("dark")) {
-//                // TODO: Set glass to dark theme if styles.xml can't handle it
-//            }
                 glassImageView.setImageDrawable(image);
             } catch (Resources.NotFoundException e) {
                 e.printStackTrace();

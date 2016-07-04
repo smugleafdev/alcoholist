@@ -6,8 +6,10 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">@color/textColor</item>
         <item name="android:textColorPrimaryInverse">@color/textColorDark</item>
-        <item name="android:drawableTint">@color/glassLight</item>
+        <!--<item name="android:drawableTint">@color/glassLight</item>-->
         <item name="android:windowBackground">@android:color/white</item>
+        <item name="floatingActionButtonIcon">@drawable/ic_add_white</item>
+
     </style>
 
     <style name="LightTheme" parent="AppTheme">
@@ -15,10 +17,14 @@
     </style>
 
     <style name="DarkTheme" parent="AppTheme">
-        <item name="android:drawableTint">@color/glassDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="floatingActionButtonIcon">@drawable/ic_add_black</item>
+        <!--<item name="android:drawableTint">@color/glassDark</item>-->
         <item name="android:windowBackground">@android:color/black</item>
         <!--<item name="android:colorPrimaryDark">@color/glassDark</item>-->
         <!-- Need to make glass match text color because it's too dark -->
     </style>
+
+    <attr name="floatingActionButtonIcon" format="reference"/>
 
 </resources>
