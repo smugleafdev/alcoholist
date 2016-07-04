@@ -39,9 +39,7 @@ import java.util.ArrayList;
 // Toolbar color? Dunno wtf to do with this
 // Theme popupBackground to not be white on dark-theme, but remain on classic/default
 // Maybe change app topbar for non-dark theme? Default seems like it should be a different color or something....
-// Delete filler data of drink_item
 // Fancy spinner refresh animation
-// Fancy ( + ) button with shadow
 // Set up vector drawables to work compatibly with APIs 15-20
 // Change background color to be slightly brighter than app icon--alt: add shadowy outline to app border?
 // Add expand/collapse animatinos to floating button
@@ -302,17 +300,29 @@ public class MenuActivity extends AppCompatActivity {
             DrinkAdapter adapter = new DrinkAdapter(this, drinks);
             ListView listView = (ListView) findViewById(R.id.listView);
             listView.setAdapter(adapter);
-            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
+            // TODO: When implementing commercial mode, use the LongClick for it
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                public void onItemClick(AdapterView<?> arg0, View arg1,
                                                int position, long id) {
                     if (!recipes.get(position).isEmpty()) {
                         createRecipeAlert(recipes.get(position));
                     }
-                    return true;
                 }
             });
+
+//            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//
+//                @Override
+//                public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+//                                               int position, long id) {
+//                    if (!recipes.get(position).isEmpty()) {
+//                        createRecipeAlert(recipes.get(position));
+//                    }
+//                    return true;
+//                }
+//            });
 
             if (drinks.size() > 0) {
                 saveSheet(object);
