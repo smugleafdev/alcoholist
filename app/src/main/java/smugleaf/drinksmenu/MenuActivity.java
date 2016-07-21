@@ -5,10 +5,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
+import android.content.res.ColorStateList;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -75,6 +76,8 @@ public class MenuActivity extends AppCompatActivity {
         // TODO: Refreshing the theme doesn't fix the title bar or actionbar menu
 
         FloatingActionButton importButton = (FloatingActionButton) findViewById(R.id.import_button);
+        ColorStateList rippleColor = ContextCompat.getColorStateList(this, R.color.ripple);
+        importButton.setBackgroundTintList(rippleColor);
 
         if (sheetUrl.isEmpty()) {
             importButton.setOnClickListener(new View.OnClickListener() {
@@ -224,12 +227,14 @@ public class MenuActivity extends AppCompatActivity {
 
     private String parseUrl(String link) {
         try {
-            URL url = new URL("https://docs.google.com/spreadsheets/d/1D-QT0LivQJcsqnK4NJe9FwMRvbYmXXCOMJb4myYObtE/edit?usp=sharing");
+//            URL url = new URL("https://docs.google.com/spreadsheets/d/1D-QT0LivQJcsqnK4NJe9FwMRvbYmXXCOMJb4myYObtE/edit?usp=sharing");
 //          URL url = new URL("https://docs.google.com/spreadsheets/d/1-EzK8yVDNskKmTKV_ycg2q2Xn2z86gp6QOwevwp1k94/edit?usp=sharing");
-//          URL url = new URL(link);
+          URL url = new URL(link);
 //            URL url = new URL("https://docs.google.com/spreadsheets/d/12pe7__L5dADvUi3qcSsvPVlt5QYwEHU5pMCahmgd6I0/edit?usp=sharing");
 
-            if (url.getAuthority().contains("docs.google.com")) {
+            if (url.equals("")) {
+                Toast.makeText(this, "Empty URL", Toast.LENGTH_SHORT).show();
+            } else if (url.getAuthority().contains("docs.google.com")) {
                 link = url.getPath();
                 link = link.replace("/spreadsheets/d/", "");
                 link = link.replace("/edit", ""); // TODO: This can... probably be handled better

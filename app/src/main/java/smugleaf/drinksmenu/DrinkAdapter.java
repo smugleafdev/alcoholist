@@ -16,6 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class DrinkAdapter extends BaseAdapter implements ListAdapter {
@@ -59,6 +61,9 @@ public class DrinkAdapter extends BaseAdapter implements ListAdapter {
             rowView = activity.getLayoutInflater().inflate(R.layout.drink_item, null);
         }
 
+        TextView text = (TextView) rowView.findViewById(R.id.name);
+        text.setText(drinks.get(position).getName() + " Position " + position);
+
         SharedPreferences prefs = activity.getSharedPreferences(MenuActivity.PREFERENCES_FILE, activity.MODE_PRIVATE);
         String theme = prefs.getString(MenuActivity.THEME, "default");
 
@@ -78,7 +83,7 @@ public class DrinkAdapter extends BaseAdapter implements ListAdapter {
         // TODO: Enums or something to find drawables by string name
 //        Log.v("IMAGE", "" + imageId);
 
-        if (!drinks.get(position).getGlassware().isEmpty()) {
+//        if (!drinks.get(position).getGlassware().isEmpty()) {
             try { // TODO: This error handling prevents crashing, but allows funny business
                 // Funny business includes: Putting a random image in when a drawable is not found
                 // Same for text and font coloring; it just pulls from random successful ones
@@ -94,31 +99,32 @@ public class DrinkAdapter extends BaseAdapter implements ListAdapter {
                 e.printStackTrace();
             }
 
-
 //            glassImageView.setImageResource(imageId);
             // TODO: Make work for API <20
             // Something to do with referencing the drawable folder
-            // TODO: Color SVG
-        }
-        if (!drinks.get(position).getName().isEmpty()) {
+            // TODO: Color SVG properly
+//        }
+//        if (!drinks.get(position).getName().isEmpty()) {
             nameTextView.setText(drinks.get(position).getName());
-            if (colorIsValid(fontColor) && theme.equals(MenuActivity.DEFAULT_THEME)) {
-                nameTextView.setTextColor(Color.parseColor("#" + fontColor));
-            }
-        }
-        if (!drinks.get(position).getBody().isEmpty()) {
+//            if (colorIsValid(fontColor) && theme.equals(MenuActivity.DEFAULT_THEME)) {
+                nameTextView.setTextColor(setTextColor(fontColor, theme));
+//            }
+//        }
+//        if (!drinks.get(position).getBody().isEmpty()) {
             bodyTextView.setText(drinks.get(position).getBody().replace("\\n", "\n"));
             // TODO: Find /n and create line break
-            if (colorIsValid(fontColor) && theme.equals(MenuActivity.DEFAULT_THEME)) {
-                bodyTextView.setTextColor(Color.parseColor("#" + fontColor));
-            }
-        }
-        if (!drinks.get(position).getPrice().isEmpty()) {
+//            if (colorIsValid(fontColor) && theme.equals(MenuActivity.DEFAULT_THEME)) {
+                bodyTextView.setTextColor(setTextColor(fontColor, theme));
+//            }
+//        } else {
+//            bodyTextView.setText("Position " + position);
+//        }
+//        if (!drinks.get(position).getPrice().isEmpty()) {
             priceTextView.setText(drinks.get(position).getPrice());
-            if (colorIsValid(fontColor) && theme.equals(MenuActivity.DEFAULT_THEME)) {
-                priceTextView.setTextColor(Color.parseColor("#" + fontColor));
-            }
-        }
+//            if (colorIsValid(fontColor) && theme.equals(MenuActivity.DEFAULT_THEME)) {
+                priceTextView.setTextColor(setTextColor(fontColor, theme));
+//            }
+//        }
         if (colorIsValid(backgroundColor) && theme.equals(MenuActivity.DEFAULT_THEME)) {
             layout.setBackgroundColor(Color.parseColor("#" + backgroundColor));
             // TODO: Don't ask them to use a #, remove it, then re-add it. Accept all forms.
@@ -136,5 +142,13 @@ public class DrinkAdapter extends BaseAdapter implements ListAdapter {
             return true;
         }
         return false;
+    }
+
+    private int setTextColor(String fontColor, String theme) {
+        if (colorIsValid(fontColor) && theme.equals(MenuActivity.DEFAULT_THEME)) {
+            return Color.parseColor("#" + fontColor);
+        } else {
+            return activity.getColor(R.color.colorAccent);
+        }
     }
 }

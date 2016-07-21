@@ -15,4 +15,7 @@
 
     <color name="backgroundLight">#FFFFFF</color>
     <color name="backgroundDark">#000000</color>
+
+    <color name="fab_dark">#707070</color>
+    <color name="fab_light">#909090</color>
 </resources>
